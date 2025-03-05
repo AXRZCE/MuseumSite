@@ -7,21 +7,21 @@
 * 
 *  Name: Aksharajsinh Parmar   Student ID: 140204223   Date: [Enter Date]
 ********************************************************************************/
-import { Html, Head, Main, NextScript } from "next/document";
+// components/Layout.js
+import { Container } from 'react-bootstrap';
+import MainNav from './MainNav';
 
-export default function Document() {
+export default function Layout({ children }) {
   return (
-    <Html lang="en">
-      <Head />
-      <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
-/>
-
-      <body>
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
+    <>
+      <MainNav />
+      {/* Two line breaks to ensure content starts below the fixed navbar */}
+      <br />
+      <br />
+      <Container>
+        {children}
+      </Container>
+      <br />
+    </>
   );
 }
