@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  WEB422 – Assignment 4
+*  WEB422 – Assignment 5
 *
 *  I declare that this assignment is my own work in accordance with Seneca's
 *  Academic Integrity Policy:
@@ -7,6 +7,7 @@
 * 
 *  Name: Aksharajsinh Parmar   Student ID: 140204223   Date: [Enter Date]
 ********************************************************************************/
+import validObjectIDList from '@/public/data/validObjectIDList.json';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
@@ -31,10 +32,12 @@ export default function Artwork() {
     if (data && data.objectIDs) {
       let results = [];
       // Create a 2D array (pages) by chunking objectIDs into groups of PER_PAGE
-      for (let i = 0; i < data.objectIDs.length; i += PER_PAGE) {
-        const chunk = data.objectIDs.slice(i, i + PER_PAGE);
+      let filteredResults = validObjectIDList.objectIDs.filter(x => data.objectIDs?.includes(x));
+      for (let i = 0; i < filteredResults.length; i += PER_PAGE) {
+        const chunk = filteredResults.slice(i, i + PER_PAGE);
         results.push(chunk);
       }
+      
       setArtworkList(results);
       setPage(1);
     }

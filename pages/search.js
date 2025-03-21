@@ -1,3 +1,14 @@
+/*********************************************************************************
+*  WEB422 – Assignment 5
+*
+*  I declare that this assignment is my own work in accordance with Seneca's
+*  Academic Integrity Policy:
+*  https://www.senecapolytechnic.ca/about/policies/academic-integrity-policy.html
+* 
+*  Name: Aksharajsinh Parmar   Student ID: 140204223   Date: [Enter Date]
+********************************************************************************/
+import { useAtom } from 'jotai';
+import { searchHistoryAtom } from '../store';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { Container, Row, Col, Form, Button, Card, InputGroup } from 'react-bootstrap';
@@ -10,6 +21,7 @@ export default function AdvancedSearch() {
     }
   });
   const router = useRouter();
+  const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
 
   const submitForm = (data) => {
     // Build query string based on provided values
@@ -24,6 +36,10 @@ export default function AdvancedSearch() {
     queryString += `&isHighlight=${data.isHighlight}`;
     queryString += `&q=${encodeURIComponent(data.q)}`;
 
+    // Add the query string to the search history atom
+    setSearchHistory(current => [...current, queryString]);
+
+    // Navigate to the artwork page with the query string
     router.push(`/artwork?${queryString}`);
   };
 
