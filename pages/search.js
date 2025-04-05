@@ -12,6 +12,7 @@ import { searchHistoryAtom } from '../store';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { Container, Row, Col, Form, Button, Card, InputGroup } from 'react-bootstrap';
+import { addToHistory } from '@/lib/userData';
 
 export default function AdvancedSearch() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
@@ -23,7 +24,7 @@ export default function AdvancedSearch() {
   const router = useRouter();
   const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
 
-  const submitForm = (data) => {
+  const submitForm = async (data) => {
     // Build query string based on provided values
     let queryString = `searchBy=true`;
     if (data.geoLocation && data.geoLocation.trim() !== "") {
@@ -36,8 +37,9 @@ export default function AdvancedSearch() {
     queryString += `&isHighlight=${data.isHighlight}`;
     queryString += `&q=${encodeURIComponent(data.q)}`;
 
-    // Add the query string to the search history atom
-    setSearchHistory(current => [...current, queryString]);
+    // Persist search history via API call and update the atom
+    const updatedHistory = await addToHistory(queryString);
+    setSearchHistory(updatedHistory);
 
     // Navigate to the artwork page with the query string
     router.push(`/artwork?${queryString}`);
@@ -76,7 +78,6 @@ export default function AdvancedSearch() {
                       <Form.Label>Geo Location</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
-                          {/* Ensure Bootstrap Icons are loaded */}
                           <i className="bi bi-geo-alt"></i>
                         </InputGroup.Text>
                         <Form.Control

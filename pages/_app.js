@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  WEB422 – Assignment 5
+*  WEB422 – Assignment 6
 *
 *  I declare that this assignment is my own work in accordance with Seneca's
 *  Academic Integrity Policy:
@@ -12,6 +12,7 @@ import '../styles/globals.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Layout from '@/components/Layout';
 import { SWRConfig } from 'swr';
+import RouteGuard from '@/components/RouteGuard';
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -27,9 +28,11 @@ const fetcher = async (url) => {
 export default function App({ Component, pageProps }) {
   return (
     <SWRConfig value={{ fetcher }}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <RouteGuard>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </RouteGuard>
     </SWRConfig>
   );
 }
